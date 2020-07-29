@@ -51,7 +51,7 @@ app.post("/transaction/broadcast", function (req, res) {
   });
   Promise.all(requestPromises).then((data) => {
     res.json({ note: "Transaction created and broadcasted successfully" });
-  });
+  }).catch(err => console.log(err));
 });
 
 //Adds a new block to the blockchain
@@ -157,7 +157,7 @@ app.post("/register-and-broadcast-node", function (req, res) {
     })
     .then((data) => {
       res.json({ note: "New node registered with network successfully." });
-    });
+    }).catch(err => console.log(err));
 });
 
 app.post("/register-node", function (req, res) {
