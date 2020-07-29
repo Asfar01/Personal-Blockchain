@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const BlockChain = require("./blockchain");
 const { v1: uuidv1 } = require("uuid");
+const cors = require("cors");
 const nodeAddress = uuidv1().split("-").join("");
 const app = express();
 const sikay = new BlockChain();
@@ -10,6 +11,10 @@ const rp = require("request-promise");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const corsOptions = { exposedHeaders: "" };
+app.use(cors(corsOptions));
+
 
 //gets entire blockchain
 app.get("/blockchain", function (req, res) {
