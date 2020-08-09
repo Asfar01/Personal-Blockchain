@@ -46,6 +46,8 @@ Blockchain.prototype.createNewTransaction = function (
 ) {
   const newTransaction = {
     amount: amount,
+    sWalletAmount: amount,
+    rWalletAmount: amount,
     sender: sender,
     recipient: recipient,
     timestamp: Date.now(),
@@ -147,16 +149,25 @@ Blockchain.prototype.getTransaction = function (transactionId) {
 Blockchain.prototype.getAddressData = function (address) {
   const addressTnx = [];
   this.chain.forEach((block) => {
-    block.transactions.forEach((transaction) => {
-      if (transaction.sender === address || transaction.recipient === address) {
-        addressTnx.push(transaction);
+    for (let i = 0; i < block.transactions.length; i++) {
+      if (
+        block.transactions[i].sender === address ||
+        block.transactions[i].recipient === address
+      ) {
+        const _trans = { ...block.transactions[i] };
+        addressTnx.push(_trans);
+        console.log("tt", addressTnx);
+        if (block.transactions[i].sender === address)
+          block.transactions[i].sWalletAmount = 0;
+        else block.transactions[i].rWalletAmount = 0;
       }
-    });
+    }
   });
   let balance = 0;
   addressTnx.forEach((transaction) => {
-    if (transaction.recipient === address) balance += transaction.amount;
-    else if (transaction.sender === address) balance -= transaction.amount;
+    if (transaction.recipient === address) balance += transaction.rWalletAmount;
+    else if (transaction.sender === address)
+      balance -= transaction.sWalletAmount;
   });
   return {
     addressTransaction: addressTnx,

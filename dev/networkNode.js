@@ -157,6 +157,7 @@ app.post("/register-and-broadcast-node", function (req, res) {
     })
     .then((data) => {
       res.json({ note: "New node registered with network successfully." });
+      console.log("node registered",data)
     }).catch(err => console.log(err));
 });
 
